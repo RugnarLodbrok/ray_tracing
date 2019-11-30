@@ -15,6 +15,11 @@ include_directories(headers)
 
 add_executable(rtx
 		src/main.c
+		src/app.c
+		src/framebuffer.c
+		src/controller.c
+		src/camera.c
+		src/projection.c
 
 		libft/src/string/ft_atoi.c
 		libft/src/string/ft_bzero.c
