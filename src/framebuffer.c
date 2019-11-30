@@ -21,19 +21,41 @@ void t_framebuffer_clear(t_framebuffer *fb)
 	ft_bzero(fb->data, fb->w * fb->h * sizeof(uint));
 }
 
-void t_framebuffer_upscale(t_framebuffer *fb, int scale)
+uint		blend_alpha(uint c1, uint c2, uint a)
 {
-	int i;
-	int j;
+	uint c;
+	uint res;
 
-	i = fb->w;
-	while (--i >= 0)
-	{
-		j = fb->h;
-		while (--j >= 0)
-		{
-			fb->data[fb->w * j + i] =
-					fb->data[fb->w * (j / scale) + i / scale];
-		}
-	}
+	c1 &= 0xFFFFFF;
+	c2 &= 0xFFFFFF;
+	res = 0;
+	c = (c1 & 0x0000FF) * (255 - a) + (c2 & 0x0000FF) * a;
+	c /= 255;
+	res += c;
+	c = ((c1 & 0x00FF00) >> 8) * (255 - a) + ((c2 & 0x00FF00) >> 8) * a;
+	c /= 255;
+	res += c << 8;
+	c = ((c1 & 0xFF0000) >> 16) * (255 - a) + ((c2 & 0xFF0000) >> 16) * a;
+	c /= 255;
+	res += c << 16;
+	return (res);
+}
+
+void	t_fb_put_pixela(t_app *app, int x, int y, uint color)
+{
+	unsigned char	a;
+	uint			*d;
+
+	if (x < 0 || y < 0 || x >= app->w || y >= app->h)
+		return ;
+	a = color >> 24;
+	d = &app->framebuffer.data[y * app->framebuffer.w + x];
+	*d = blend_alpha(*d, color, a);
+}
+
+void	t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color)
+{
+	if (x < 0 || y < 0 || x >= f->w || y >= f->h)
+		return ;
+	f->data[y * f->w + x] = color;
 }

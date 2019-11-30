@@ -94,5 +94,6 @@ void	bind_keys(void *win, t_controller *c);
 int		close_hook(void *param);
 void	t_framebuffer_init(t_framebuffer *fb, void *mlx, int w, int h);
 void	t_framebuffer_clear(t_framebuffer *fb);
+void	t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color);
 
 #endif

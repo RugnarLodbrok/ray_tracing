@@ -48,7 +48,7 @@ void t_cam_init(t_cam *c, t_point display_res)
 
 void t_cam_draw(t_cam *cam, t_framebuffer *fb, t_obj **objs)
 {
-
+	t_fb_put_pixel(fb, 10, 10, RED * 255);
 }
 
 void t_cam_move(t_cam *cam, t_controller *ctrl, double dt)
