@@ -4,7 +4,7 @@
 #include "mlx.h"
 #include "mlx_consts.h"
 
-static int close_hook(void *param)
+static int close_hook(int keycode, void *param)
 {
 	(void)param;
 	exit(0);
@@ -40,8 +40,8 @@ void t_app_init(t_app *app, void (*update)(t_app *app, double dt))
 	app->objs = malloc(sizeof(t_obj *) * 2);
 	app->objs[0] = malloc(sizeof(t_obj));
 	app->objs[1] = 0;
-	app->objs[0]->c = (t_vec){0, 0, 0};
-	app->objs[0]->r = 10;
+	app->objs[0]->pos = (t_vec){0, 3., 0};
+	app->objs[0]->r = 1.;
 	t_cam_init(&app->cam, (t_point){WIN_W, WIN_H});
 }
 

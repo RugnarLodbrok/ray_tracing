@@ -22,7 +22,6 @@ void	t_controller_update_state(t_controller *c)
 	c->d_tilt = c->keyboard[KEY_Q] - c->keyboard[KEY_E];
 	c->d_yaw = c->keyboard[KEY_LEFT] - c->keyboard[KEY_RIGHT];
 	c->d_pitch = c->keyboard[KEY_DOWN] - c->keyboard[KEY_UP];
-	c->d_yaw = c->keyboard[KEY_Z] - c->keyboard[KEY_X];
 }
 
 int		t_controller_key_press(int keycode, void *p)

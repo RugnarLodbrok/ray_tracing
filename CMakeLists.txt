@@ -20,6 +20,7 @@ add_executable(rtx
 		src/controller.c
 		src/camera.c
 		src/projection.c
+		src/ray.c
 
 		libft/src/string/ft_atoi.c
 		libft/src/string/ft_bzero.c

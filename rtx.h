@@ -1,9 +1,9 @@
 #ifndef RTX_H
 # define RTX_H
 
-# define WIN_W 800
-# define WIN_H 600
-# define FRAME_RATE 20
+# define WIN_W 320
+# define WIN_H 240
+# define FRAME_RATE 10
 # define FRAME_TIME 1./FRAME_RATE
 
 # define FOV 100.
@@ -15,9 +15,16 @@
 
 typedef struct
 {
-	t_vec c;
+	t_mat m;
+	t_vec pos;
 	double r;
 } t_obj;
+
+typedef struct
+{
+	t_vec pos;
+	t_vec dir;
+} t_ray;
 
 typedef struct
 {
@@ -79,21 +86,23 @@ typedef struct s_app
 	void (*update)(struct s_app *app, double dt);
 } t_app;
 
-void	t_app_init(t_app *app, void (*update)(t_app *app, double dt));
-void	t_app_up(t_app *app);
-void	t_app_run(t_app *app);
+void t_app_init(t_app *app, void (*update)(t_app *app, double dt));
+void t_app_up(t_app *app);
+void t_app_run(t_app *app);
 
-void	t_cam_init(t_cam *c, t_point display_res);
-void	t_cam_init_projection(t_cam *c);
-void	t_cam_draw(t_cam *cam, t_framebuffer *fb, t_obj** objs);
-void	t_cam_move(t_cam *cam, t_controller *ctrl, double dt);
+void t_cam_init(t_cam *c, t_point display_res);
+void t_cam_init_projection(t_cam *c);
+void t_cam_draw(t_cam *cam, t_framebuffer *fb, t_obj *obj);
+void t_cam_move(t_cam *cam, t_controller *ctrl, double dt);
 
-t_mat	projection_isometric(double fov_width, double fov_height);
-t_mat	projection_perspective(double n, double w, double h, double f);
-void	bind_keys(void *win, t_controller *c);
-int		close_hook(void *param);
-void	t_framebuffer_init(t_framebuffer *fb, void *mlx, int w, int h);
-void	t_framebuffer_clear(t_framebuffer *fb);
-void	t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color);
+t_mat projection_isometric(double fov_width, double fov_height);
+t_mat projection_perspective(double n, double w, double h, double f);
+void bind_keys(void *win, t_controller *c);
+void t_framebuffer_init(t_framebuffer *fb, void *mlx, int w, int h);
+void t_framebuffer_clear(t_framebuffer *fb);
+void t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color);
+
+void t_ray_transform(t_ray *r, t_mat *m);
+uint t_ray_cast(t_ray *r, t_obj *obj);
 
 #endif
