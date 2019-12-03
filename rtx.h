@@ -1,8 +1,12 @@
 #ifndef RTX_H
 # define RTX_H
 
+
 # define WIN_W 320
 # define WIN_H 240
+# define WIN_W_2 ((int)(WIN_W/2))
+# define WIN_H_2 ((int)(WIN_H/2))
+
 # define FRAME_RATE 10
 # define FRAME_TIME 1./FRAME_RATE
 
@@ -104,5 +108,6 @@ void t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color);
 
 void t_ray_transform(t_ray *r, t_mat *m);
 uint t_ray_cast(t_ray *r, t_obj *obj);
+void t_ray_printf(t_ray r);
 
 #endif

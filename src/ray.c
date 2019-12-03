@@ -6,6 +6,13 @@ void t_vec_printf(t_vec v)
 	ft_printf("vec<%.2f %.2f %.2f>\n", v.x, v.y, v.z);
 }
 
+void t_ray_printf(t_ray r)
+{
+	ft_printf("ray<%.2f %.2f %.2f>-<%.2f %.2f %.2f>\n",
+			r.pos.x, r.pos.y, r.pos.z,
+			r.dir.x, r.dir.y, r.dir.z);
+}
+
 void t_ray_transform(t_ray *r, t_mat *m)
 {
 	r->pos = t_vec_transform4(r->pos, m);

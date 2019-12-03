@@ -29,7 +29,7 @@ void t_cam_init(t_cam *c, t_point display_res)
 	w = display_res.x;
 	h = display_res.y;
 	t_mat_reset(&c->v3);
-	t_mat_translate(&c->v3, (t_vec){0, 0, -400});
+	t_mat_translate(&c->v3, (t_vec){0, 0, -100});
 	c->v1 = (t_mat){{
 							{1, 0, 0, 0},
 							{0, 0, -1, 0},
@@ -44,12 +44,6 @@ void t_cam_init(t_cam *c, t_point display_res)
 	c->zoom = 0;
 	c->projection_type = PROJ_PERSPECTIVE;
 	t_cam_init_projection(c);
-
-	//because ray tracing requires inverse transformation
-//	c->v1 = t_mat_inverted(c->v1);
-//	c->v2 = t_mat_inverted(c->v2);
-//	c->disp = t_mat_inverted(c->disp);
-//	c->proj = t_mat_inverted(c->proj);
 }
 
 t_mat t_cam_matrix_stack(t_cam *cam)
@@ -60,8 +54,7 @@ t_mat t_cam_matrix_stack(t_cam *cam)
 	m = t_mat_mul(cam->v1, m);
 	m = t_mat_mul(cam->v2, m);
 	m = t_mat_mul(cam->v3, m);
-	m = t_mat_mul(cam->proj, m);
-	m = t_mat_mul(cam->disp, m);
+//	m = t_mat_mul(cam->disp, m);
 	return t_mat_inverted(m);
 }
 
@@ -71,18 +64,21 @@ void t_cam_draw(t_cam *cam, t_framebuffer *fb, t_obj *obj)
 	t_mat m;
 	int i;
 	int j;
+	double z;
 
 	ft_printf("obj: %f, (%f %f %f)\n", obj->r, obj->pos.x, obj->pos.y,
 			  obj->pos.z);
 	m = t_cam_matrix_stack(cam);
-//	t_mat_printf(m);
+	z = tan(radians(FOV/2)) * WIN_W_2;
 	for (i = 0; i < WIN_W; ++i)
 	{
 		for (j = 0; j < WIN_H; ++j)
 		{
-			r = (t_ray){(t_vec){(double)i, (double)j, 0},
-						(t_vec){0, 0, 1}};
+			r = (t_ray){(t_vec){0, 0, 0}, //all rays start from the same point
+						(t_vec){i - WIN_W_2, j - WIN_H_2, z}};
 			t_ray_transform(&r, &m);
+			if (!i && !j)
+				t_ray_printf(r);
 			t_fb_put_pixel(fb, i, j, t_ray_cast(&r, obj));
 		}
 	}
@@ -111,9 +107,9 @@ void t_cam_move(t_cam *cam, t_controller *ctrl, double dt)
 	}
 	if (ctrl->dx || ctrl->dz)
 		t_mat_translate(&cam->v3, (t_vec){
-				ctrl->dx * dt * 1000,
+				-ctrl->dx * dt * 100,
 				0,
-				ctrl->dz * dt * 1000});
+				-ctrl->dz * dt * 100});
 //	if (ctrl->d_zoom)
 //	{
 //		cam->zoom += ctrl->d_zoom;
