@@ -17,8 +17,8 @@
 
 void	t_controller_update_state(t_controller *c)
 {
-	c->dx = c->keyboard[KEY_A] - c->keyboard[KEY_D];
-	c->dz = c->keyboard[KEY_S] - c->keyboard[KEY_W];
+	c->dx = c->keyboard[KEY_D] - c->keyboard[KEY_A];
+	c->dz = c->keyboard[KEY_W] - c->keyboard[KEY_S];
 	c->d_tilt = c->keyboard[KEY_Q] - c->keyboard[KEY_E];
 	c->d_yaw = c->keyboard[KEY_LEFT] - c->keyboard[KEY_RIGHT];
 	c->d_pitch = c->keyboard[KEY_DOWN] - c->keyboard[KEY_UP];

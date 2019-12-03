@@ -13,6 +13,8 @@
 # define FOV 100.
 # define PROJ_PERSPECTIVE 1
 # define PROJ_ISOMETRIC 0
+# define RAY_MARCH_EPS .001
+# define RAY_CAST_MAX_DISTANCE 99999.
 
 # include "libft.h"
 # include "ft_linalg.h"
