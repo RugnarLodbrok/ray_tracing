@@ -16,6 +16,9 @@
 # define RAY_MARCH_EPS .001
 # define RAY_CAST_MAX_DISTANCE 99999.
 
+
+# define OBJ_TYPE_SPHERE 0
+
 # include "libft.h"
 # include "ft_linalg.h"
 
@@ -30,11 +33,17 @@ typedef struct
 
 typedef struct
 {
-	t_vec pos;
-	double r;
 	t_material m;
+	t_vec pos;
+	int type;
+	void *obj;
+	t_mat tr;
 } t_obj;
 
+typedef struct
+{
+	double r;
+} t_obj_sphere;
 
 typedef struct
 {
@@ -127,6 +136,7 @@ uint phong(t_material *m,
 		   t_vec *light, //normalized
 		   double light_intencity,
 		   t_vec *view);
-t_obj t_obj_sphere(t_vec pos, double r);
+t_obj t_obj_new_sphere(t_vec pos, double r);
+double t_obj_sphere_distance(t_obj *obj, t_vec p);
 
 #endif

@@ -116,6 +116,7 @@ add_executable(rtx
 		libft/src/t_buff.c
 		libft/src/endian.c
 		libft/src/ft_error_exit.c
+		libft/src/swatch.c
 
 		libft/src/threading/thread.c
 		libft/src/threading/thread_pool.c

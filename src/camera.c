@@ -65,23 +65,28 @@ void t_cam_draw(t_cam *cam, t_framebuffer *fb, t_obj *obj)
 	int i;
 	int j;
 	double z;
+	uint color;
+	t_vec p0;
+	t_vec p1;
 
 	m = t_cam_matrix_stack(cam);
-	z = tan(radians(FOV/2)) * WIN_W_2;
+	p0 = (t_vec){m.data[0][3], m.data[1][3], m.data[2][3]};
+	z = tan(radians(FOV / 2)) * WIN_W_2;
 	for (i = 0; i < WIN_W; ++i)
 	{
 		for (j = 0; j < WIN_H; ++j)
 		{
-			r = (t_ray){(t_vec){m.data[0][3], m.data[1][3], m.data[2][3]},
-						t_vec_transform((t_vec){i - WIN_W_2, j - WIN_H_2, z}, &m),
-			};
-			t_vec_normalize(&r.dir);
-			t_fb_put_pixel(fb, i, j, t_ray_cast(&r, obj));
+			p1 = (t_vec){
+					((double)(i - WIN_W_2)) / z,
+					((double)(j - WIN_H_2)) / z,
+					1};
+			r = (t_ray){p0,
+						t_vec_transform3(p1, &m)};
+//			t_vec_normalize(&r.dir);
+			color = t_ray_cast(&r, obj);
+			t_fb_put_pixel(fb, i, j, color);
 		}
 	}
-//	ft_printf("(%f %f %f)->(%f %f %f)\n",
-//			  r.pos.x, r.pos.y, r.pos.z,
-//			  r.dir.x, r.dir.y, r.dir.z);
 }
 
 void t_cam_move(t_cam *cam, t_controller *ctrl, double dt)

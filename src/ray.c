@@ -20,29 +20,12 @@ void t_ray_transform(t_ray *r, t_mat *m)
 	r->dir = t_vec_transform3(r->dir, m);
 }
 
-uint t_ray_cast_naive(t_ray *r, t_obj *obj)
-{
-	t_vec d;
-	t_vec p;
-	uint color;
-
-	d = t_vec_sub(obj->pos, r->pos);
-	p = t_vec_proj(d, r->dir); //proj d onto r->dir;
-	d = t_vec_sub(d, p);
-	if (t_vec_len(d) > obj->r)
-		color = 0;
-	else
-		color = (RED * 255);
-	return color;
-}
-
 //return normale or zero-vec
 t_vec t_ray_march(t_ray *r, t_obj *obj)
 {
 	double distance;
 	t_vec pos;
 	t_vec ret;
-	t_vec d;
 	int i;
 
 	distance = RAY_CAST_MAX_DISTANCE;
@@ -51,11 +34,8 @@ t_vec t_ray_march(t_ray *r, t_obj *obj)
 	while (distance > RAY_MARCH_EPS)
 	{
 		if (distance > RAY_CAST_MAX_DISTANCE || ++i > 30)
-		{
 			return (t_vec){0, 0, 0};
-		}
-		d = t_vec_sub(obj->pos, pos);
-		distance = t_vec_len(d) - obj->r;
+		distance = t_obj_sphere_distance(obj, pos);
 		pos.x += distance * r->dir.x;
 		pos.y += distance * r->dir.y;
 		pos.z += distance * r->dir.z;
@@ -76,7 +56,4 @@ uint t_ray_cast(t_ray *r, t_obj *obj)
 		return 0;
 	light = (t_vec){0, 1, 0};
 	return phong(&obj->m, &normale, &light, 1, &r->dir);
-	dot = fabs(t_vec_dot(normale, (t_vec){1, 1, 1}));
-	return RED * (int)(dot / 3 * 255);
-//	return t_ray_cast_naive(r, obj);
 }
