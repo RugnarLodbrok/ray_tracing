@@ -94,7 +94,6 @@ void t_cam_move(t_cam *cam, t_controller *ctrl, double dt)
 		cam->v1 = t_mat_mul(cam->v1, t_mat_rot(
 				(t_vec){0, 0, 1},
 				radians(dt * ctrl->d_yaw * 50)));
-		t_mat_printf(cam->v1);
 	}
 	if (ctrl->d_pitch)
 	{

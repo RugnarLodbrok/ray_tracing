@@ -21,10 +21,20 @@
 
 typedef struct
 {
-	t_mat m;
+	uint amb;
+	uint diff;
+	uint spec;
+	double spec_exp;
+	double spec_v;
+} t_material;
+
+typedef struct
+{
 	t_vec pos;
 	double r;
+	t_material m;
 } t_obj;
+
 
 typedef struct
 {
@@ -111,5 +121,12 @@ void t_fb_put_pixel(t_framebuffer *f, int x, int y, uint color);
 void t_ray_transform(t_ray *r, t_mat *m);
 uint t_ray_cast(t_ray *r, t_obj *obj);
 void t_ray_printf(t_ray r);
+
+uint phong(t_material *m,
+		   t_vec *normale, //normalized
+		   t_vec *light, //normalized
+		   double light_intencity,
+		   t_vec *view);
+t_obj t_obj_sphere(t_vec pos, double r);
 
 #endif

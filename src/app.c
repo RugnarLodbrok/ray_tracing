@@ -40,8 +40,7 @@ void t_app_init(t_app *app, void (*update)(t_app *app, double dt))
 	app->objs = malloc(sizeof(t_obj *) * 2);
 	app->objs[0] = malloc(sizeof(t_obj));
 	app->objs[1] = 0;
-	app->objs[0]->pos = (t_vec){0, 3., 0};
-	app->objs[0]->r = 10.;
+	*(app->objs[0]) = t_obj_sphere((t_vec){0, 0, 0}, 10);
 	t_cam_init(&app->cam, (t_point){WIN_W, WIN_H});
 }
 
